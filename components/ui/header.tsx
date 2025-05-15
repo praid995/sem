@@ -50,7 +50,7 @@ export function Header() {
         
         {/* Центральный логотип */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="font-heading text-xl md:text-2xl font-bold tracking-wider text-[#D0D5D9]">
+          <h1 className="header-font text-xl md:text-2xl text-[#D0D5D9]">
             SEMYON SURODIN
           </h1>
         </div>

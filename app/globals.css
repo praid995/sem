@@ -18,9 +18,29 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap');
+
+/* Шрифты */
 @font-face {
   font-family: 'Great Vibes';
   src: url('/fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Nimbus Sans Bold для шапки и контактов */
+@font-face {
+  font-family: 'Nimbus Sans Bold';
+  src: url('/fonts/NimbusSanL-Bol.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Theater Bold для заголовков */
+@font-face {
+  font-family: 'Theater Bold';
+  src: url('/fonts/Theater_Bold.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -120,16 +140,8 @@
     font-family: 'PT Sans Narrow', sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sonny Gothic Condensed', 'PT Sans Narrow', sans-serif;
+    font-family: 'Theater Bold', 'PT Sans Narrow', sans-serif;
   }
-}
-
-@font-face {
-  font-family: 'Sonny Gothic Condensed';
-  src: url('https://fonts.cdnfonts.com/css/sonny-gothic-condensed') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
 }
 
 /* Masonry layout for gallery */
@@ -194,4 +206,24 @@
 
 .font-bebas-neue {
   font-family: 'Bebas Neue', 'Bebas Neue Fallback', 'Arial Narrow Bold', sans-serif;
+}
+
+/* Стили для заголовков */
+.font-heading {
+  font-family: 'Theater Bold', 'PT Sans Narrow', sans-serif;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+/* Стили для шапки и контактов */
+.header-font {
+  font-family: 'Nimbus Sans Bold', 'PT Sans Narrow', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+}
+
+.contact-info {
+  font-family: 'Nimbus Sans Bold', 'PT Sans Narrow', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.02em;
 }

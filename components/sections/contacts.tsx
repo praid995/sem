@@ -108,7 +108,7 @@ export function Contacts() {
                 <p className="text-gray-400 text-lg mb-2">
                   Телефон для связи
                 </p>
-                <p className="text-white text-2xl font-heading font-bold">
+                <p className="text-white text-2xl contact-info">
                   <a href="tel:+79222245645" className="hover:text-[#fbf7e4]">
                     +7 (922) 224-56-45
                   </a>
@@ -126,7 +126,7 @@ export function Contacts() {
                 <p className="text-gray-400 text-lg mb-2">
                   Электронная почта
                 </p>
-                <p className="text-white text-2xl font-heading font-bold">
+                <p className="text-white text-2xl contact-info">
                   <a href="mailto:surodin.semyon@yandex.ru" className="hover:text-[#fbf7e4]">
                     surodin.semyon@yandex.ru
                   </a>
