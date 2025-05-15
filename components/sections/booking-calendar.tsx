@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { formatDate } from "@/lib/utils";
 import { slideUp } from "@/lib/animations";
 import { BackgroundPattern } from "@/components/ui/background-pattern";
+import { SelectSingleEventHandler } from "@/components/ui/calendar";
 
 export function BookingCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -61,6 +62,17 @@ export function BookingCalendar() {
     });
   };
 
+  const handleSelect: SelectSingleEventHandler = (day) => {
+    setSelectedDate(day);
+    // Прокручиваем к форме на мобильных устройствах
+    if (window.innerWidth <= 768) {
+      const formElement = document.querySelector('.booking-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   return (
     <section id="booking-calendar" className="relative py-20 bg-[#1C2526]">
       <BackgroundPattern 
@@ -105,7 +117,7 @@ export function BookingCalendar() {
             <Calendar
               mode="single"
               selected={selectedDate}
-              onSelect={setSelectedDate}
+              onSelect={handleSelect}
               locale={ru}
               className="border-0"
               modifiersClassNames={{
@@ -127,7 +139,7 @@ export function BookingCalendar() {
             variants={slideUp}
             custom={2}
           >
-            <div className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg">
+            <div className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg booking-form">
               <div className="space-y-4">
                 {/* Дата */}
                 <div>

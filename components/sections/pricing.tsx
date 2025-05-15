@@ -81,9 +81,10 @@ export function Pricing() {
             <motion.div
               key={plan.id}
               className={`relative bg-[#1e2c2d] rounded-xl p-6 shadow-xl transition-all duration-500 ease-in-out group
-                hover:bg-[#fbf7e4] hover:scale-105 hover:shadow-2xl`}
+                hover:bg-[#fbf7e4] cursor-pointer`}
               onMouseEnter={() => setActiveCard(plan.id)}
               onMouseLeave={() => setActiveCard(null)}
+              onClick={() => handleTariffSelect(plan)}
               variants={slideUp}
             >
               {plan.isPopular && (
@@ -121,8 +122,8 @@ export function Pricing() {
                 onClick={() => handleTariffSelect(plan)}
                 className={`w-full transition-colors duration-300 mt-2
                   ${plan.isPopular 
-                    ? "bg-[#F20505] text-[#fbf7e4] hover:bg-[#fbf7e4] hover:text-[#F20505]" 
-                    : "bg-[#fbf7e4] text-[#1e2c2d] hover:bg-[#1e2c2d] hover:text-[#fbf7e4]"
+                    ? "bg-[#F20505] text-[#fbf7e4] group-hover:bg-[#fbf7e4] group-hover:text-[#F20505]" 
+                    : "bg-[#fbf7e4] text-[#1e2c2d] group-hover:bg-[#1e2c2d] group-hover:text-[#fbf7e4]"
                   }`}
                 data-track="cta"
               >
