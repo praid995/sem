@@ -122,7 +122,7 @@ export function Pricing() {
                 onClick={() => handleTariffSelect(plan)}
                 className={`w-full transition-colors duration-300 mt-2
                   ${plan.isPopular 
-                    ? "bg-[#F20505] text-[#fbf7e4] group-hover:bg-[#fbf7e4] group-hover:text-[#F20505]" 
+                    ? "bg-[#F20505] text-[#fbf7e4] hover:bg-[#F20505] hover:text-[#fbf7e4]" 
                     : "bg-[#fbf7e4] text-[#1e2c2d] group-hover:bg-[#1e2c2d] group-hover:text-[#fbf7e4]"
                   }`}
                 data-track="cta"
