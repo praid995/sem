@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { Calendar as CalendarIcon, CalendarCheck, User } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,14 +13,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { formatDate } from "@/lib/utils";
 import { slideUp } from "@/lib/animations";
 import { BackgroundPattern } from "@/components/ui/background-pattern";
-import { SelectSingleEventHandler } from "@/components/ui/calendar";
+import type { SelectSingleEventHandler, BookingFormData } from "@/lib/types";
 
 export function BookingCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [eventType, setEventType] = useState("");
-  const [selectedTariff, setSelectedTariff] = useState("");
-  const [name, setName] = useState("");
-  const [isUndecidedTariff, setIsUndecidedTariff] = useState(false);
+  const [formData, setFormData] = useState<BookingFormData>({
+    selectedDate: null,
+    eventType: "",
+    selectedTariff: "",
+    name: "",
+    isUndecidedTariff: false
+  });
 
   // Функция для перехода к разделу тарифов
   const scrollToPricing = () => {
@@ -32,9 +34,13 @@ export function BookingCalendar() {
 
   // Эффект для обработки выбора тарифа из раздела Pricing
   useEffect(() => {
-    const handleTariffSelection = (event: CustomEvent) => {
-      setSelectedTariff(event.detail.tariff);
-      setIsUndecidedTariff(false);
+    const handleTariffSelection = (event: CustomEvent<{ tariff: string }>) => {
+      setFormData(prev => ({
+        ...prev,
+        selectedTariff: event.detail.tariff,
+        isUndecidedTariff: false
+      }));
+      
       const bookingSection = document.getElementById("booking-calendar");
       if (bookingSection) {
         bookingSection.scrollIntoView({ behavior: "smooth" });
@@ -48,6 +54,8 @@ export function BookingCalendar() {
   }, []);
 
   const handleSubmit = async () => {
+    const { selectedDate, eventType, selectedTariff, isUndecidedTariff, name } = formData;
+    
     if (!selectedDate || !eventType || (!selectedTariff && !isUndecidedTariff) || !name) {
       alert("Пожалуйста, заполните все обязательные поля");
       return;
@@ -62,13 +70,15 @@ export function BookingCalendar() {
     });
   };
 
-  const handleSelect: SelectSingleEventHandler = (day) => {
-    setSelectedDate(day);
-    // Прокручиваем к форме на мобильных устройствах
-    if (window.innerWidth <= 768) {
-      const formElement = document.querySelector('.booking-form');
-      if (formElement) {
-        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleSelect: SelectSingleEventHandler = (day: Date | undefined) => {
+    if (day) {
+      setFormData(prev => ({ ...prev, selectedDate: day }));
+      // Прокручиваем к форме на мобильных устройствах
+      if (window.innerWidth <= 768) {
+        const formElement = document.querySelector('.booking-form');
+        if (formElement) {
+          formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
   };
@@ -98,9 +108,9 @@ export function BookingCalendar() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <motion.div 
-            className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg"
+            className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg mx-auto w-full"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -116,10 +126,10 @@ export function BookingCalendar() {
             
             <Calendar
               mode="single"
-              selected={selectedDate}
+              selected={formData.selectedDate || undefined}
               onSelect={handleSelect}
               locale={ru}
-              className="border-0"
+              className="border-0 mx-auto"
               modifiersClassNames={{
                 selected: "bg-[#F20505] text-white hover:bg-[#F20505]"
               }}
@@ -131,7 +141,7 @@ export function BookingCalendar() {
             />
           </motion.div>
 
-          <motion.div
+          <motion.div 
             className="space-y-6"
             initial="hidden"
             whileInView="visible"
@@ -139,13 +149,13 @@ export function BookingCalendar() {
             variants={slideUp}
             custom={2}
           >
-            <div className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg booking-form">
+            <div className="bg-[#1e2c2d] rounded-xl p-6 shadow-lg booking-form h-full">
               <div className="space-y-4">
                 {/* Дата */}
                 <div>
                   <Label htmlFor="selected-date" className="text-[#D0D5D9]">Выбранная дата</Label>
                   <div className="mt-1 p-3 bg-[#23292a] rounded-md text-[#D0D5D9]">
-                    {selectedDate ? format(selectedDate, 'dd.MM.yyyy', { locale: ru }) : 'Дата не выбрана'}
+                    {formData.selectedDate ? format(formData.selectedDate, 'dd.MM.yyyy', { locale: ru }) : 'Дата не выбрана'}
                   </div>
                 </div>
 
@@ -154,8 +164,8 @@ export function BookingCalendar() {
                   <Label htmlFor="event-type" className="text-[#D0D5D9]">Вид мероприятия</Label>
                   <Input
                     id="event-type"
-                    value={eventType}
-                    onChange={(e) => setEventType(e.target.value)}
+                    value={formData.eventType}
+                    onChange={(e) => setFormData(prev => ({ ...prev, eventType: e.target.value }))}
                     className="mt-1 bg-[#23292a] border-[#D99282]/20 text-[#D0D5D9]"
                     placeholder="Укажите вид мероприятия"
                   />
@@ -168,25 +178,26 @@ export function BookingCalendar() {
                     <div className="flex items-center justify-between">
                       <div 
                         className={`p-3 bg-[#23292a] rounded-md text-[#D0D5D9] flex-1 mr-2 cursor-pointer ${
-                          isUndecidedTariff ? 'opacity-50' : ''
+                          formData.isUndecidedTariff ? 'opacity-50' : ''
                         }`}
                         onClick={() => {
-                          if (!isUndecidedTariff) {
+                          if (!formData.isUndecidedTariff) {
                             scrollToPricing();
                           }
                         }}
                       >
-                        {selectedTariff || 'Выберите тариф'}
+                        {formData.selectedTariff || 'Выберите тариф'}
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id="undecided"
-                          checked={isUndecidedTariff}
+                          checked={formData.isUndecidedTariff}
                           onCheckedChange={(checked) => {
-                            setIsUndecidedTariff(checked as boolean);
-                            if (checked) {
-                              setSelectedTariff('');
-                            }
+                            setFormData(prev => ({
+                              ...prev,
+                              isUndecidedTariff: checked as boolean,
+                              selectedTariff: checked ? '' : prev.selectedTariff
+                            }));
                           }}
                         />
                         <label
@@ -205,8 +216,8 @@ export function BookingCalendar() {
                   <Label htmlFor="name" className="text-[#D0D5D9]">Ваше имя</Label>
                   <Input
                     id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={formData.name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="mt-1 bg-[#23292a] border-[#D99282]/20 text-[#D0D5D9]"
                     placeholder="Введите ваше имя"
                   />
@@ -216,7 +227,7 @@ export function BookingCalendar() {
                 <Button
                   onClick={handleSubmit}
                   className="w-full py-6 bg-[#F20505] hover:bg-[#D99282] text-white"
-                  disabled={!selectedDate || !eventType || (!selectedTariff && !isUndecidedTariff) || !name}
+                  disabled={!formData.selectedDate || !formData.eventType || (!formData.selectedTariff && !formData.isUndecidedTariff) || !formData.name}
                 >
                   Забронировать дату
                 </Button>

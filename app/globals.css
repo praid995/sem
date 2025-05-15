@@ -159,6 +159,30 @@
 }
 
 /* Custom calendar styling */
+.rdp {
+  margin: 0 auto;
+  width: fit-content;
+}
+
+@media (max-width: 768px) {
+  .rdp {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .rdp-month {
+    width: 100%;
+  }
+  
+  .rdp-table {
+    width: 100%;
+  }
+  
+  .rdp-cell {
+    width: calc(100% / 7);
+  }
+}
+
 .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
   background-color: #F20505 !important;
   color: white !important;
