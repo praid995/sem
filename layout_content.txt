@@ -1,0 +1,52 @@
+﻿import './globals.css';
+import type { Metadata } from 'next';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Analytics } from '@/components/analytics';
+import { schemaSurodini } from '@/lib/schema';
+
+export const metadata: Metadata = {
+  title: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ | Р’РµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+  description: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ вЂ” РІРµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№. РЎРѕР·РґР°СЋ Р°С‚РјРѕСЃС„РµСЂСѓ, РІ РєРѕС‚РѕСЂРѕР№ РєР°Р¶РґС‹Р№ РіРѕСЃС‚СЊ С‡СѓРІСЃС‚РІСѓРµС‚ СЃРµР±СЏ РІР°Р¶РЅРѕР№ С‡Р°СЃС‚СЊСЋ СЃРѕР±С‹С‚РёСЏ.',
+  openGraph: {
+    title: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ | Р’РµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+    description: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ вЂ” РІРµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№. РЎРѕР·РґР°СЋ Р°С‚РјРѕСЃС„РµСЂСѓ, РІ РєРѕС‚РѕСЂРѕР№ РєР°Р¶РґС‹Р№ РіРѕСЃС‚СЊ С‡СѓРІСЃС‚РІСѓРµС‚ СЃРµР±СЏ РІР°Р¶РЅРѕР№ С‡Р°СЃС‚СЊСЋ СЃРѕР±С‹С‚РёСЏ.',
+    url: 'https://surodin-event.ru',
+    siteName: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ | Р’РµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'РЎРµРјС‘РЅ РЎСѓСЂРѕРґРёРЅ вЂ” РІРµРґСѓС‰РёР№ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+      },
+    ],
+    locale: 'ru_RU',
+    type: 'website',
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaSurodini) }}
+        />
+      </head>
+      <body className="font-body bg-background text-foreground">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+        </ThemeProvider>
+        <Analytics />
+      </body>
+    </html>
+  );
+}
