@@ -26,7 +26,6 @@ export const schemaSurodini = {
       "@id": "https://surodin-event.ru/#person",
       "name": "Семён Суродин",
       "jobTitle": "Ведущий мероприятий",
-      "description": "Создаю атмосферу, в которой каждый гость чувствует себя важной частью события",
       "worksFor": {
         "@id": "https://surodin-event.ru/#organization"
       }

@@ -6,7 +6,6 @@ import { socialLinks, hostImages } from "@/lib/data";
 import { slideUp } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Send, Globe, Instagram } from "lucide-react";
-import { BackgroundPattern } from "@/components/ui/background-pattern";
 
 export function Contacts() {
   const getIcon = (iconName: string) => {
@@ -25,14 +24,7 @@ export function Contacts() {
   };
 
   return (
-    <section id="contacts" className="relative py-20 bg-gradient-to-b from-[#1C2526] to-[#151d1e]">
-      <BackgroundPattern 
-        baseColor="#1C2526" 
-        accentColor="#fbf7e4" 
-        secondaryColor="#F20505" 
-        opacity={0.25}
-      />
-      
+    <section id="contacts" className="relative py-20 overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <motion.div 
           className="text-center mb-12"
@@ -86,7 +78,7 @@ export function Contacts() {
                     asChild
                     variant="outline"
                     size="lg"
-                    className="px-6 py-6 rounded-xl border-[#fbf7e4]/50 hover:border-[#fbf7e4] hover:bg-[#fbf7e4]/10 text-[#fbf7e4] text-lg"
+                    className="px-6 py-6 rounded-xl border-[#222]/30 hover:border-[#444] bg-transparent text-[#222] hover:text-[#444] text-lg transition-colors duration-200"
                   >
                     <a href={link.link} target="_blank" rel="noopener noreferrer" data-track="cta">
                       {getIcon(link.icon)}
@@ -131,6 +123,16 @@ export function Contacts() {
                     surodin.semyon@yandex.ru
                   </a>
                 </p>
+                {/* Кнопка для скачивания договора — по центру под email */}
+                <div className="flex justify-center mt-4">
+                  <a
+                    href="/111DOGOVOR_SVAD_BA.docx"
+                    download
+                    className="px-6 py-3 rounded-full bg-[#333333] text-[#fbf7e4] font-bold text-lg shadow-lg hover:bg-[#555555] transition-colors duration-300"
+                  >
+                    Смотреть договор
+                  </a>
+                </div>
               </motion.div>
             </div>
           </div>

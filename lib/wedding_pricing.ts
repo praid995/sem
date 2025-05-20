@@ -12,7 +12,7 @@ export const eventPricingPlans: EventPricingPlan[] = [
   {
     id: 1,
     name: "Лайт",
-    price: "40 000 ₽",
+    price: "45 000 ₽",
     description: "Для уютных, камерных свадеб",
     features: [
       "Ведущий + диджей",

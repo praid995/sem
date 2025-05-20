@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BackgroundPattern } from "@/components/ui/background-pattern";
 
 export function QuoteSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -70,21 +69,7 @@ export function QuoteSection() {
   };
 
   return (
-    <section className="relative py-48 bg-[#1C2526] overflow-hidden">
-      <BackgroundPattern 
-        baseColor="#1C2526" 
-        accentColor="#fbf7e4" 
-        secondaryColor="#F20505" 
-        opacity={0.2}
-      />
-      
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent to-[#1C2526]/70"
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-      />
-
+    <section className="relative py-48 overflow-hidden">
       <div className="container relative z-10 mx-auto px-6 md:px-10 lg:px-16">
         <div className="flex flex-col items-center justify-center text-center min-h-[650px] py-16">
           <div className="w-full max-w-7xl mx-auto overflow-visible px-4 md:px-12 lg:px-20">

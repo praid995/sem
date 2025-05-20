@@ -4,14 +4,15 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@/components/analytics';
 import { HeaderWrapper } from '@/components/ui/header-wrapper';
 import { schemaSurodini } from '@/lib/schema';
+import { SiteBackgroundCircles } from '@/components/ui/site-background-circles';
 
 export const metadata: Metadata = {
   title: "Семён Суродин | Ведущий мероприятий",
-  description: "Семён Суродин — ведущий мероприятий. Создаю атмосферу, в которой каждый гость чувствует себя важной частью события.",
+  description: "Профессиональный ведущий мероприятий.",
   metadataBase: new URL("https://surodin-event.ru"),
   openGraph: {
     title: "Семён Суродин | Ведущий мероприятий",
-    description: "Семён Суродин — ведущий мероприятий. Создаю атмосферу, в которой каждый гость чувствует себя важной частью события.",
+    description: "Семён Суродин — ведущий мероприятий.",
     url: "https://surodin-event.ru",
     siteName: "Семён Суродин | Ведущий мероприятий",
     images: [
@@ -45,13 +46,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaSurodini) }}
         />
       </head>
-      <body className="font-body bg-background text-foreground">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <HeaderWrapper />
-          <div className="pt-16">
-            {children}
-          </div>
-        </ThemeProvider>
+      <body className="font-body text-foreground relative min-h-screen">
+        {/* SVG-узор с кругами на белом фоне */}
+        <SiteBackgroundCircles />
+        
+        <div className="relative z-10 flex min-h-screen flex-col bg-transparent">
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <HeaderWrapper />
+            <main className="flex-1 pt-16">{children}</main>
+          </ThemeProvider>
+        </div>
         <Analytics />
       </body>
     </html>

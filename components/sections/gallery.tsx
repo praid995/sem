@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { galleryImages } from "@/lib/data";
-import { BackgroundPattern } from "@/components/ui/background-pattern";
 
 export function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,14 +28,7 @@ export function Gallery() {
   };
 
   return (
-    <section id="gallery" className="relative py-20 bg-[#1C2526]" ref={containerRef}>
-      <BackgroundPattern 
-        baseColor="#1C2526" 
-        accentColor="#D99282" 
-        secondaryColor="#F20505" 
-        opacity={0.2}
-      />
-      
+    <section id="gallery" className="relative py-20 overflow-x-hidden" ref={containerRef}>
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
@@ -101,7 +93,7 @@ export function Gallery() {
                 />
               </div>
               <button 
-                className="absolute top-4 right-4 bg-white/20 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/40 transition-colors"
+                className="absolute top-4 right-4 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/40 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   closeImage();

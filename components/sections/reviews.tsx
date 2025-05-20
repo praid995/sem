@@ -2,24 +2,29 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { Star } from "lucide-react";
 import { reviews } from "@/lib/data";
 import { carouselSlide } from "@/lib/animations";
-import { Button } from "@/components/ui/button";
-import { BackgroundPattern } from "@/components/ui/background-pattern";
+import Image from "next/image";
 
 export function Reviews() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Рассчитываем индексы для 3 видимых карточек с учетом цикличности
+  const getVisibleReviews = () => {
+    const visibleIndices = [];
+    for (let i = 0; i < 3; i++) {
+      visibleIndices.push((currentIndex + i) % reviews.length);
+    }
+    return visibleIndices.map(index => reviews[index]);
+  };
+
   const handleNext = useCallback(() => {
-    setDirection(1);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
   }, []);
 
   const handlePrev = useCallback(() => {
-    setDirection(-1);
     setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
   }, []);
 
@@ -28,99 +33,94 @@ export function Reviews() {
     if (!isPaused) {
       const interval = setInterval(() => {
         handleNext();
-      }, 6000); // Change slide every 6 seconds
-      
+      }, 5000); // Change slide every 5 seconds
       return () => clearInterval(interval);
     }
   }, [handleNext, isPaused]);
 
+  // Останавливаем автопрокрутку при наведении мышки
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
+
+  // Функция для отрисовки звезд рейтинга (всегда 5 звезд)
+  const renderStars = () => {
+    return Array(5).fill(0).map((_, i) => (
+      <Star key={i} className="h-4 w-4 fill-[#FFC107] text-[#FFC107]" />
+    ));
+  };
+
   return (
-    <section id="reviews" className="relative py-20 bg-gradient-to-b from-[#1C2526] to-[#1C2526]/90">
-      <BackgroundPattern 
-        baseColor="#1C2526" 
-        accentColor="#D99282" 
-        secondaryColor="#F20505" 
-        opacity={0.25}
-      />
-      
-      <div className="container relative z-10 mx-auto px-4">
+    <section id="reviews" className="relative py-20 overflow-x-hidden" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
             Отзывы о моей работе
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            За 8 лет я провел более 500 мероприятий различного формата. Вот что говорят мои клиенты:
-          </p>
+        </div>
+        
+        <div className="flex justify-center mb-16">
+          <Image 
+            src="/host/otz.webp" 
+            alt="Отзывы" 
+            width={600} 
+            height={400} 
+            className="rounded-lg"
+          />
         </div>
         
         <div 
-          className="relative max-w-4xl mx-auto"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          className="relative max-w-6xl mx-auto"
         >
-          <div className="relative h-96 md:h-80 overflow-hidden">
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={carouselSlide(direction)}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="absolute inset-0 flex flex-col items-center justify-center px-4 md:px-10"
-              >
-                <Quote className="text-[#D99282] w-10 h-10 md:w-14 md:h-14 mb-4 opacity-50" />
-                <p className="text-gray-100 text-center text-lg md:text-xl italic mb-6 max-w-3xl">
-                  {reviews[currentIndex].text}
-                </p>
-                <div className="text-center">
-                  <p className="font-heading font-bold text-[#D99282]">
-                    {reviews[currentIndex].name}
-                  </p>
-                  <p className="text-gray-400 text-sm">
-                    {reviews[currentIndex].event}, {reviews[currentIndex].date}
-                  </p>
-                </div>
-              </motion.div>
+          {/* Кнопки навигации */}
+          <button
+            aria-label="Предыдущий отзыв"
+            onClick={handlePrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-[#2C2C2C] hover:bg-[#444444] text-white rounded-full shadow-lg p-1.5 transition-colors duration-200 border border-[#444444]"
+            style={{marginLeft: '-16px', width: 32, height: 32, minWidth: 32, minHeight: 32}}
+          >
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button
+            aria-label="Следующий отзыв"
+            onClick={handleNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[#2C2C2C] hover:bg-[#444444] text-white rounded-full shadow-lg p-1.5 transition-colors duration-200 border border-[#444444]"
+            style={{marginRight: '-16px', width: 32, height: 32, minWidth: 32, minHeight: 32}}
+          >
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <div className="relative overflow-x-visible px-4">
+            <AnimatePresence initial={false} mode="wait">
+              <div className="flex justify-between gap-6 mb-8">
+                {getVisibleReviews().map((review, idx) => (
+                  <motion.div
+                    key={`${review.id}-${currentIndex + idx}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -30 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white rounded-lg shadow-md p-5 flex-1 flex flex-col"
+                    style={{ minHeight: '320px' }}
+                  >
+                    <div className="mb-3">
+                      <h3 className="font-bold text-xl">{review.name}</h3>
+                      <div className="flex mt-1">
+                        {renderStars()}
+                      </div>
+                    </div>
+                    <div className="flex-grow">
+                      <p className="text-gray-700 line-clamp-6 mb-2">
+                        {review.text}
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <p className="text-gray-500 text-sm">
+                        {review.event}, {review.date}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </AnimatePresence>
-          </div>
-          
-          <div className="flex justify-center mt-8 gap-3">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={handlePrev}
-              className="w-10 h-10 rounded-full border-[#D99282]/50 hover:border-[#D99282] hover:bg-[#D99282]/10 text-[#D99282]"
-            >
-              <ChevronLeft className="h-5 w-5" />
-              <span className="sr-only">Previous</span>
-            </Button>
-            
-            {reviews.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  setDirection(idx > currentIndex ? 1 : -1);
-                  setCurrentIndex(idx);
-                }}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  currentIndex === idx 
-                    ? "bg-[#D99282]" 
-                    : "bg-gray-600 hover:bg-gray-500"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-            
-            <Button 
-              variant="outline"
-              size="icon"
-              onClick={handleNext}
-              className="w-10 h-10 rounded-full border-[#D99282]/50 hover:border-[#D99282] hover:bg-[#D99282]/10 text-[#D99282]"
-            >
-              <ChevronRight className="h-5 w-5" />
-              <span className="sr-only">Next</span>
-            </Button>
           </div>
         </div>
       </div>

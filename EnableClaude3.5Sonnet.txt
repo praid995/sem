@@ -1,0 +1,1 @@
+Enable Claude 3.5 Sonnet for all clients

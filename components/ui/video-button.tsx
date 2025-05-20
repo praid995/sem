@@ -17,9 +17,10 @@ export function VideoButton() {
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="relative group"
+        className="relative group rounded-full"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        style={{ boxShadow: '0 4px 24px 0 rgba(139,35,35,0.10)' }}
       >
         <div className="relative w-[120px] h-[120px] flex items-center justify-center">
           <motion.svg 
@@ -36,18 +37,20 @@ export function VideoButton() {
               id="circle"
               d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
               fill="none"
-              stroke="currentColor"
+              stroke="#000"
               strokeWidth="1"
-              className="text-[#D99282] opacity-50"
+              className="opacity-0"
             />
-            <text className="text-[16px] fill-[#D0D5D9]">
+            <text className="text-[16px] fill-black">
               <textPath href="#circle" startOffset="0%">
                 моя визитка • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; моя визитка •
               </textPath>
             </text>
           </motion.svg>
-          <div className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-[#D99282]/20 flex items-center justify-center backdrop-blur-sm transition-colors group-hover:bg-[#D99282]/30">
-            <Play className="w-8 h-8 text-[#D99282] transition-transform group-hover:scale-110" />
+          <div className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-[#8B2323] flex items-center justify-center transition-colors">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="w-8 h-8">
+              <polygon points="8,6 19,12 8,18" fill="#fff" />
+            </svg>
           </div>
         </div>
       </motion.button>
@@ -81,7 +84,7 @@ export function VideoButton() {
               ) : (
                 <video
                   src="/host/video/vid_vizitka.MP4"
-                  className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full"
                   controls
                   autoPlay
                   onError={handleVideoError}

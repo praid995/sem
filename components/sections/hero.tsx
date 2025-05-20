@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { fadeIn, slideUp, slideRight } from "@/lib/animations";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
-import { VideoButton } from "@/components/ui/video-button";
-import { hostImages } from "@/lib/data";
-import { BackgroundPattern } from "@/components/ui/background-pattern";
+import { VideoButton } from "../ui/video-button";
 
 export function Hero() {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,117 +11,81 @@ export function Hero() {
     setIsVisible(true);
   }, []);
 
-  const handleOpenCalendar = () => {
-    const calendarSection = document.getElementById("booking-calendar");
-    if (calendarSection) {
-      calendarSection.scrollIntoView({ behavior: "smooth" });
-    }
-    
-    if (window.trackEvent) {
-      window.trackEvent("cta_click");
-    }
-  };
-
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-[#1C2526]">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#1C2526]/90 z-10"></div>
-      
-      <div className="absolute inset-0 opacity-40">
-        <Image 
-          src={hostImages.hero}
-          alt="Семён Суродин на фоне студийного света"
-          fill
-          style={{ objectFit: "cover" }}
-          quality={90}
-          priority
-          className="blur-[2px]"
-        />
-      </div>
-      
-      <BackgroundPattern 
-        baseColor="#1C2526" 
-        accentColor="#fbf7e4" 
-        secondaryColor="#F20505" 
-        opacity={0.3}
-      />
-      
-      <div className="container max-w-4xl relative z-20 px-4 py-20 lg:py-32 mx-auto flex flex-col-reverse lg:flex-row items-center lg:justify-center gap-8 lg:gap-12">
-        <motion.div 
-          className="w-full lg:w-1/2 text-center lg:text-left"
-          initial="hidden"
-          animate={isVisible ? "visible" : "hidden"}
-          variants={fadeIn}
+    <>
+      <section id="hero" className="relative flex items-start min-h-[80vh] overflow-hidden pt-8 md:pt-12 pb-0">
+        {/* SVG-узор по краям УДАЛЕН, так как он теперь глобальный в app/layout.tsx */}
+        {/* 
+        <svg
+          className="pointer-events-none absolute left-0 top-0 h-full w-full z-0"
+          width="100%"
+          height="100%"
+          viewBox="0 0 1920 1080"
+          preserveAspectRatio="xMidYMid slice"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
-          <motion.h1 
-            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white leading-tight"
-            variants={slideRight}
-          >
-            Семён Суродин
-            <span className="block text-[#fbf7e4]">ведущий мероприятий</span>
-          </motion.h1>
-          
-          <motion.p 
-             className="text-3xl md:text-4xl text-[#fbf7e4] mb-8 max-w-xl mx-auto lg:mx-0 great-vibes"
-             variants={slideUp}
-          >
-            Создаю атмосферу, в которой каждый гость чувствует себя важной частью события
-          </motion.p>
-          
-          <motion.div
-            variants={slideUp}
-            custom={1}
-            className="flex flex-col items-center lg:items-start"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start w-full gap-6">
-              <Button 
-                onClick={handleOpenCalendar}
-                size="lg" 
-                className="w-full sm:w-auto text-lg px-8 py-6 bg-[#fbf7e4] hover:bg-[#b87a6c] font-medium max-w-[300px]"
-                data-track="cta"
-              >
-                <Calendar className="mr-2 h-5 w-5" />
-                Забронировать дату
-              </Button>
-              <VideoButton />
+          <circle cx="-200" cy="540" r="500" fill="#ECECEC" fillOpacity="0.7" />
+          <circle cx="1920" cy="200" r="180" fill="#ECECEC" fillOpacity="0.5" />
+          <circle cx="1920" cy="800" r="120" fill="#ECECEC" fillOpacity="0.4" />
+        </svg>
+        */}
+
+        {/* Основной контент: Фото и Заголовки */}
+        <div className="relative w-full h-full" style={{ transform: 'translateX(52px)' }}>
+          <div className="container max-w-6xl w-full relative z-10 px-4 mx-auto flex flex-col md:flex-row items-start justify-center gap-4 md:gap-8 lg:gap-12">
+            {/* Фото ведущего и лента */}
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end items-end md:items-end mt-[-40px] md:mt-[-80px] lg:mt-[-120px] relative z-10 md:ml-[-40px] lg:ml-[-80px]">
+              <div className="relative w-[272px] h-[416px] md:w-[336px] md:h-[560px] lg:w-[400px] lg:h-[680px] xl:w-[480px] xl:h-[800px] flex flex-col items-center justify-end">
+                <Image 
+                  src="/host/prozz.webp"
+                  alt="Семён Суродин"
+                  fill
+                  style={{ objectFit: "contain" }}
+                  className="relative z-20"
+                  priority
+                />
+              </div>
             </div>
-          </motion.div>
-        </motion.div>
-        
-        <motion.div 
-          className="w-full lg:w-1/2 flex justify-center lg:justify-end"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <div className="relative w-[307px] h-[307px] md:w-[384px] md:h-[384px] lg:w-[461px] lg:h-[540px] rounded-full lg:rounded-2xl overflow-hidden border-4 border-[#fbf7e4]/80 shadow-2xl">
-            <Image
-              src="/host/lampa.webp"
-              alt="Семён Суродин"
-              fill
-              style={{ objectFit: "cover" }}
-              className="hover:scale-105 transition-transform duration-500"
-              priority
-            />
+            {/* Текст */}
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left justify-start md:ml-[-61px] mt-2 md:mt-0 relative z-10">
+              <h1
+                className="font-oswald leading-none font-normal mb-2"
+                style={{ fontSize: 'clamp(4rem, 10vw, 8.5rem)', lineHeight: 1, letterSpacing: '0.08em', fontWeight: 400 }}
+              >
+                Семён<br />Суродин
+              </h1>
+              <div 
+                className="font-oswald text-base md:text-lg lg:text-xl mt-4 md:mt-6 lg:mt-8 tracking-widest" 
+                style={{ letterSpacing: '0.12em', fontWeight: 400, fontSize: 'clamp(0.8rem, 2vw, 1.25rem)' }}
+              >
+                КОРПОРАТИВЫ | СВАДЬБЫ | ДР | ВЕЧЕРИНКИ
+              </div>
+
+              {/* Кнопка видео — круглая, с крутящимися фразами */}
+              <div className="mt-8 flex justify-center w-full">
+                <VideoButton />
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </div>
+      </section>
+
+      {/* Блок с lin2.webp */}
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '80px' }}>
+        <img
+          src="/site/lin2.webp"
+          alt="Создаю мероприятия"
+          className="w-full object-contain"
+          style={{ minHeight: '80px', maxHeight: '120px', height: 'auto', position: 'relative' }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <h2 className="text-white text-2xl md:text-4xl font-bold tracking-widest text-center whitespace-nowrap drop-shadow-lg">
+            СОЗДАЮ МЕРОПРИЯТИЯ, НА КОТОРЫХ ВЫ КАЙФУЕТЕ
+          </h2>
+        </div>
       </div>
-      
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-        <button 
-          onClick={() => {
-            const reviewsSection = document.getElementById("reviews");
-            if (reviewsSection) {
-              reviewsSection.scrollIntoView({ behavior: "smooth" });
-            }
-          }}
-          aria-label="Scroll down"
-          className="text-white/80 hover:text-white"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 5v14M5 12l7 7 7-7"/>
-          </svg>
-        </button>
-      </div>
-    </section>
+    </>
   );
 }

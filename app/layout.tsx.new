@@ -6,11 +6,11 @@ import { schemaSurodini } from '@/lib/schema';
 
 export const metadata: Metadata = {
   title: "Семён Суродин | Ведущий мероприятий",
-  description: "Семён Суродин — ведущий мероприятий. Создаю атмосферу, в которой каждый гость чувствует себя важной частью события.",
+  description: "Семён Суродин — ведущий мероприятий.",
   metadataBase: new URL("https://surodin-event.ru"),
   openGraph: {
     title: "Семён Суродин | Ведущий мероприятий",
-    description: "Семён Суродин — ведущий мероприятий. Создаю атмосферу, в которой каждый гость чувствует себя важной частью события.",
+    description: "Семён Суродин — ведущий мероприятий.",
     url: "https://surodin-event.ru",
     siteName: "Семён Суродин | Ведущий мероприятий",
     images: [
