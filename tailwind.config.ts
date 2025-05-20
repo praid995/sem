@@ -12,6 +12,8 @@ const config: Config = {
       fontFamily: {
         heading: ['Sonny Gothic Condensed', 'PT Sans Narrow', 'sans-serif'],
         body: ['PT Sans Narrow', 'sans-serif'],
+        'oswald': ['Oswald', 'sans-serif'],
+        'arialamu': ['ArialAMU', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -64,6 +66,11 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        brand: {
+          primary: "#F20505",
+          secondary: "#1e2c2d",
+          background: "#fbf7e4",
+        }
       },
       keyframes: {
         'accordion-down': {
