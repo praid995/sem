@@ -6,19 +6,19 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-10 bg-[#F5F5F5]">
+    <footer className="py-10 bg-[#ececec]">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <p className="font-heading text-xl text-[#1e1e1e]">
+            <p className="font-heading text-xl text-[#2a2929]">
               Семён Суродин
             </p>
-            <p className="text-sm text-[#444444]">
+            <p className="text-sm text-[#2a2929]/80">
               Ведущий мероприятий
             </p>
           </div>
           
-          <div className="text-sm text-center md:text-right text-[#444444]">
+          <div className="text-sm text-center md:text-right text-[#2a2929]/80">
             <p className="mb-1">
               © {currentYear} Все права защищены
             </p>
@@ -28,7 +28,7 @@ export function Footer() {
           </div>
         </div>
         
-        <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-center text-[#555555]">
+        <div className="mt-8 pt-6 border-t border-gray-400 text-sm text-center text-[#2a2929]/60">
           <p>
             Этот сайт собирает и обрабатывает персональные данные в соответствии с политикой конфиденциальности.
           </p>

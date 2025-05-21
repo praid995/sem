@@ -69,30 +69,20 @@ export function QuoteSection() {
   };
 
   return (
-    <section className="relative py-48 overflow-hidden">
-      <div className="container relative z-10 mx-auto px-6 md:px-10 lg:px-16">
-        <div className="flex flex-col items-center justify-center text-center min-h-[650px] py-16">
-          <div className="w-full max-w-7xl mx-auto overflow-visible px-4 md:px-12 lg:px-20">
+    <section className="relative py-48 overflow-hidden bg-brand-background">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-center text-center min-h-[50vh] py-16">
+          <div className="w-full max-w-6xl mx-auto">
             <motion.div
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-10 text-white"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-8 font-bebas-neue"
               style={{ 
-                fontFamily: "'Bebas Neue', sans-serif",
-                textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                background: "linear-gradient(to right, #F3E9DC, #fbf7e4)",
+                textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+                background: "linear-gradient(135deg, #F20505, #2c2c2c)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                color: "transparent",
-                overflowWrap: "break-word",
-                wordWrap: "break-word",
-                hyphens: "auto",
-                width: "100%",
-                display: "block",
                 letterSpacing: "0.05em",
-                paddingTop: "30px",
-                transform: "scale(0.95)",
-                transformOrigin: "center center",
-                lineHeight: "1.4"
+                lineHeight: "1.2"
               }}
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
@@ -102,25 +92,15 @@ export function QuoteSection() {
             </motion.div>
             
             <motion.div
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bebas-neue"
               style={{ 
-                fontFamily: "'Bebas Neue', sans-serif",
-                textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                background: "linear-gradient(to right, #fbf7e4, #F3E9DC)",
+                textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+                background: "linear-gradient(135deg, #2c2c2c, #F20505)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                color: "transparent",
-                overflowWrap: "break-word",
-                wordWrap: "break-word",
-                hyphens: "auto",
-                width: "100%",
-                display: "block",
                 letterSpacing: "0.05em",
-                paddingBottom: "40px",
-                transform: "scale(0.95)",
-                transformOrigin: "center center",
-                lineHeight: "1.4"
+                lineHeight: "1.2"
               }}
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}

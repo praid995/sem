@@ -20,7 +20,6 @@ export function VideoButton() {
         className="relative group rounded-full"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        style={{ boxShadow: '0 4px 24px 0 rgba(139,35,35,0.10)' }}
       >
         <div className="relative w-[120px] h-[120px] flex items-center justify-center">
           <motion.svg 

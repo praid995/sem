@@ -50,7 +50,7 @@ export function Pricing() {
   };
 
   return (
-    <section id="pricing" className="relative py-20 bg-[#e01f1f] overflow-x-hidden">
+    <section id="pricing" className="relative py-20 bg-[#e01f1f]/90 overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <motion.div 
           className="text-center mb-12"

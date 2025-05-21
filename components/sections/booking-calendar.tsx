@@ -83,7 +83,7 @@ export function BookingCalendar() {
   };
 
   return (
-    <section id="booking-calendar" className="relative py-20 bg-white overflow-x-hidden">
+    <section id="booking-calendar" className="relative py-20 overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <motion.div 
           className="text-center mb-12"
@@ -92,17 +92,17 @@ export function BookingCalendar() {
           viewport={{ once: true }}
           variants={slideUp}
         >
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1e1e1e] mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#2a2929] mb-4">
             Забронировать дату
           </h2>
-          <p className="text-[#444444] max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Выберите интересующую вас дату, и я свяжусь с вами, чтобы обсудить детали вашего мероприятия
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <motion.div 
-            className="bg-[#F5F5F5] rounded-xl p-6 shadow-lg mx-auto w-full"
+            className="bg-white rounded-xl p-6 shadow-lg mx-auto w-full"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -110,8 +110,8 @@ export function BookingCalendar() {
             custom={1}
           >
             <div className="flex items-center justify-center mb-4">
-              <CalendarIcon className="mr-2 h-5 w-5 text-[#444444]" />
-              <h3 className="font-heading text-xl font-bold text-[#1e1e1e]">
+              <CalendarIcon className="mr-2 h-5 w-5 text-[#F20505]" />
+              <h3 className="font-heading text-xl font-bold text-[#2a2929]">
                 Выберите дату
               </h3>
             </div>
@@ -121,9 +121,10 @@ export function BookingCalendar() {
               selected={formData.selectedDate || undefined}
               onSelect={handleSelect}
               locale={ru}
-              className="border-0 mx-auto"
+              className="border-0 mx-auto text-[#2a2929]"
               modifiersClassNames={{
-                selected: "bg-[#F5F5F5] text-[#1e1e1e] font-bold hover:bg-[#F5F5F5]"
+                selected: "bg-[#F20505] text-white hover:bg-[#F20505] focus:bg-[#F20505]",
+                today: "text-[#F20505] font-bold"
               }}
               disabled={(date) => {
                 const today = new Date();
@@ -141,35 +142,35 @@ export function BookingCalendar() {
             variants={slideUp}
             custom={2}
           >
-            <div className="bg-[#F5F5F5] rounded-xl p-6 shadow-lg booking-form h-full">
+            <div className="bg-white rounded-xl p-6 shadow-lg booking-form h-full">
               <div className="space-y-4">
                 {/* Дата */}
                 <div>
-                  <Label htmlFor="selected-date" className="text-[#1e1e1e]">Выбранная дата</Label>
-                  <div className="mt-1 p-3 bg-white rounded-md text-[#1e1e1e]">
+                  <Label htmlFor="selected-date" className="text-gray-700">Выбранная дата</Label>
+                  <div className="mt-1 p-3 bg-gray-100 rounded-md text-[#2a2929]">
                     {formData.selectedDate ? format(formData.selectedDate, 'dd.MM.yyyy', { locale: ru }) : 'Дата не выбрана'}
                   </div>
                 </div>
 
                 {/* Вид мероприятия */}
                 <div>
-                  <Label htmlFor="event-type" className="text-[#1e1e1e]">Какое мероприятие планируете?</Label>
+                  <Label htmlFor="event-type" className="text-gray-700">Какое мероприятие планируете?</Label>
                   <Input
                     id="event-type"
                     value={formData.eventType}
                     onChange={(e) => setFormData(prev => ({ ...prev, eventType: e.target.value }))}
-                    className="mt-1 bg-white border-gray-200 text-[#1e1e1e]"
+                    className="mt-1 bg-gray-100 border-gray-300 text-[#2a2929] focus:border-[#F20505] focus:ring-[#F20505]"
                     placeholder="Укажите тип мероприятия"
                   />
               </div>
               
                 {/* Тариф */}
                 <div>
-                  <Label className="text-[#1e1e1e]">Тариф</Label>
+                  <Label className="text-gray-700">Тариф</Label>
                   <div className="mt-1 space-y-2">
                     <div className="flex items-center justify-between">
                       <div 
-                        className={`p-3 bg-white rounded-md text-[#1e1e1e] flex-1 mr-2 cursor-pointer ${
+                        className={`p-3 bg-gray-100 rounded-md text-[#2a2929] flex-1 mr-2 cursor-pointer ${
                           formData.isUndecidedTariff ? 'opacity-50' : ''
                         }`}
                         onClick={() => {
@@ -191,10 +192,11 @@ export function BookingCalendar() {
                               selectedTariff: checked ? '' : prev.selectedTariff
                             }));
                           }}
+                          className="border-gray-400 data-[state=checked]:bg-[#F20505] data-[state=checked]:text-white"
                         />
                         <label
                           htmlFor="undecided"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#1e1e1e]"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
                         >
                           Ещё не определился
                         </label>
@@ -205,12 +207,12 @@ export function BookingCalendar() {
 
                 {/* Имя */}
                 <div>
-                  <Label htmlFor="name" className="text-[#1e1e1e]">Ваше имя</Label>
+                  <Label htmlFor="name" className="text-gray-700">Ваше имя</Label>
                             <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="mt-1 bg-white border-gray-200 text-[#1e1e1e]"
+                    className="mt-1 bg-gray-100 border-gray-300 text-[#2a2929] focus:border-[#F20505] focus:ring-[#F20505]"
                     placeholder="Введите ваше имя"
                             />
                           </div>
@@ -218,7 +220,7 @@ export function BookingCalendar() {
                 {/* Кнопка отправки */}
                         <Button 
                   onClick={handleSubmit}
-                  className="w-full py-6 bg-[#1e1e1e] hover:bg-[#444444] text-white"
+                  className="w-full py-6 bg-[#F20505] hover:bg-[#e01f1f] text-white"
                   disabled={!formData.selectedDate || !formData.eventType || (!formData.selectedTariff && !formData.isUndecidedTariff) || !formData.name}
                 >
                   Забронировать дату

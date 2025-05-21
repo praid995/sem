@@ -2,126 +2,178 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { reviews } from "@/lib/data";
-import { carouselSlide } from "@/lib/animations";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+
+// Animation variants for carousel
+const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+};
+
+// Function to render star ratings
+const renderStars = (rating: number) => {
+  const stars = [];
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <Star
+        key={i}
+        className={`w-4 h-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+      />
+    );
+  }
+  return <div className="flex mt-1">{stars}</div>; // Added mt-1 for spacing
+};
 
 export function Reviews() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [[page, direction], setPage] = useState([0, 0]);
   const [isPaused, setIsPaused] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3); // По умолчанию 3
 
-  // Рассчитываем индексы для 3 видимых карточек с учетом цикличности
-  const getVisibleReviews = () => {
-    const visibleIndices = [];
-    for (let i = 0; i < 3; i++) {
-      visibleIndices.push((currentIndex + i) % reviews.length);
-    }
-    return visibleIndices.map(index => reviews[index]);
-  };
-
-  const handleNext = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
-  }, []);
-
-  const handlePrev = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
-  }, []);
-
-  // Auto-advancing carousel
   useEffect(() => {
-    if (!isPaused) {
+    const checkMobile = () => {
+      if (window.innerWidth < 768) { // 768px это стандартный breakpoint для md в Tailwind
+        setItemsPerPage(1);
+      } else {
+        setItemsPerPage(3);
+      }
+    };
+    checkMobile(); // Проверка при монтировании
+    window.addEventListener('resize', checkMobile); // Проверка при изменении размера окна
+    return () => window.removeEventListener('resize', checkMobile); // Очистка слушателя
+  }, []);
+
+  // Calculate the start and end indices for the current page
+  const startIndex = Math.abs(page % Math.ceil(reviews.length / itemsPerPage)) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, reviews.length);
+  const currentReviews = reviews.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(reviews.length / itemsPerPage);
+
+  const paginate = useCallback((newDirection: number) => {
+    setPage(prev => [(prev[0] + newDirection + totalPages) % totalPages, newDirection]);
+  }, [totalPages]);
+
+  useEffect(() => {
+    if (!isPaused && reviews.length > itemsPerPage) { // Используем itemsPerPage
       const interval = setInterval(() => {
-        handleNext();
-      }, 5000); // Change slide every 5 seconds
+        paginate(1);
+      }, 5000); 
       return () => clearInterval(interval);
     }
-  }, [handleNext, isPaused]);
-
-  // Останавливаем автопрокрутку при наведении мышки
-  const handleMouseEnter = () => setIsPaused(true);
-  const handleMouseLeave = () => setIsPaused(false);
-
-  // Функция для отрисовки звезд рейтинга (всегда 5 звезд)
-  const renderStars = () => {
-    return Array(5).fill(0).map((_, i) => (
-      <Star key={i} className="h-4 w-4 fill-[#FFC107] text-[#FFC107]" />
-    ));
-  };
+  }, [paginate, isPaused, itemsPerPage]); // Добавляем itemsPerPage в зависимости
 
   return (
-    <section id="reviews" className="relative py-20 overflow-x-hidden" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="container mx-auto px-4">
+    <section 
+      id="reviews" 
+      className="relative py-16 md:py-24 pb-12 md:pb-24" // Добавляем pb-12 для мобильных, чтобы календарь не накладывался
+    >
+      <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-oswald font-bold text-gray-800 mb-4"> 
             Отзывы о моей работе
           </h2>
         </div>
-        
-        <div className="flex justify-center mb-16">
-          <Image 
-            src="/host/otz.webp" 
-            alt="Отзывы" 
-            width={600} 
-            height={400} 
-            className="rounded-lg"
-          />
-        </div>
-        
-        <div 
-          className="relative max-w-6xl mx-auto"
+
+        <div
+          className="relative mb-[-5px] z-40"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Кнопки навигации */}
-          <button
-            aria-label="Предыдущий отзыв"
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-[#2C2C2C] hover:bg-[#444444] text-white rounded-full shadow-lg p-1.5 transition-colors duration-200 border border-[#444444]"
-            style={{marginLeft: '-16px', width: 32, height: 32, minWidth: 32, minHeight: 32}}
-          >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <button
-            aria-label="Следующий отзыв"
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[#2C2C2C] hover:bg-[#444444] text-white rounded-full shadow-lg p-1.5 transition-colors duration-200 border border-[#444444]"
-            style={{marginRight: '-16px', width: 32, height: 32, minWidth: 32, minHeight: 32}}
-          >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-          <div className="relative overflow-x-visible px-4">
-            <AnimatePresence initial={false} mode="wait">
-              <div className="flex justify-between gap-6 mb-8">
-                {getVisibleReviews().map((review, idx) => (
-                  <motion.div
-                    key={`${review.id}-${currentIndex + idx}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -30 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white rounded-lg shadow-md p-5 flex-1 flex flex-col"
-                    style={{ minHeight: '320px' }}
-                  >
-                    <div className="mb-3">
-                      <h3 className="font-bold text-xl">{review.name}</h3>
-                      <div className="flex mt-1">
-                        {renderStars()}
-                      </div>
-                    </div>
-                    <div className="flex-grow">
-                      <p className="text-gray-700 line-clamp-6 mb-2">
+          <div className="relative h-[450px] md:h-[380px]">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={page} // Key change triggers animation
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.3 }
+                }}
+                className="absolute inset-0 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+              >
+                {currentReviews.map((review, index) => (
+                  <div key={review.id} className="bg-white rounded-lg shadow-xl p-6 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-0.5">
+                        {review.name}
+                      </h3>
+                      {renderStars(review.rating)} 
+                      <p className="text-gray-700 text-base leading-relaxed mt-3 mb-4 line-clamp-6">
                         {review.text}
                       </p>
                     </div>
-                    <div className="mt-auto pt-4 border-t border-gray-100">
-                      <p className="text-gray-500 text-sm">
-                        {review.event}, {review.date}
+                    <div className="text-right">
+                      <p className="text-gray-500 text-xs">
+                        {review.event} - {review.date}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </div>
+              </motion.div>
             </AnimatePresence>
           </div>
+
+          {reviews.length > itemsPerPage && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => paginate(-1)}
+                className="absolute top-1/2 left-[-15px] md:left-[-30px] transform -translate-y-1/2 bg-white/70 hover:bg-white rounded-full shadow-lg text-gray-700 hover:text-gray-900 z-20"
+                aria-label="Previous reviews"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => paginate(1)}
+                className="absolute top-1/2 right-[-15px] md:right-[-30px] transform -translate-y-1/2 bg-white/70 hover:bg-white rounded-full shadow-lg text-gray-700 hover:text-gray-900 z-20"
+                aria-label="Next reviews"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </Button>
+            </>
+          )}
+          
+          {reviews.length > itemsPerPage && (
+            <div className="flex justify-center mt-12 space-x-2">
+              {Array.from({ length: totalPages }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    const currentPage = Math.abs(page % totalPages);
+                    if (idx !== currentPage) {
+                        setPage([idx, idx > currentPage ? 1 : -1]);
+                    }
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ease-in-out focus:outline-none ${
+                    Math.abs(page % totalPages) === idx
+                      ? "bg-red-600 scale-125"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to page ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

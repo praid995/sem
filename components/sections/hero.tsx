@@ -12,8 +12,8 @@ export function Hero() {
   }, []);
 
   return (
-    <>
-      <section id="hero" className="relative flex items-start min-h-[80vh] overflow-hidden pt-8 md:pt-12 pb-0">
+    <div className="relative pb-20 md:pb-0">
+      <section id="hero" className="relative flex items-start min-h-[80vh] md:min-h-[calc(80vh+80px)] overflow-hidden pt-8 md:pt-12 pb-0">
         {/* SVG-узор по краям УДАЛЕН, так как он теперь глобальный в app/layout.tsx */}
         {/* 
         <svg
@@ -34,10 +34,11 @@ export function Hero() {
 
         {/* Основной контент: Фото и Заголовки */}
         <div className="relative w-full h-full" style={{ transform: 'translateX(52px)' }}>
-          <div className="container max-w-6xl w-full relative z-10 px-4 mx-auto flex flex-col md:flex-row items-start justify-center gap-4 md:gap-8 lg:gap-12">
+          <div className="container max-w-6xl w-full relative z-10 px-4 mx-auto flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-12 -ml-[67px] md:ml-[53px]">
             {/* Фото ведущего и лента */}
             <div className="w-full md:w-1/2 flex justify-center md:justify-end items-end md:items-end mt-[-40px] md:mt-[-80px] lg:mt-[-120px] relative z-10 md:ml-[-40px] lg:ml-[-80px]">
-              <div className="relative w-[272px] h-[416px] md:w-[336px] md:h-[560px] lg:w-[400px] lg:h-[680px] xl:w-[480px] xl:h-[800px] flex flex-col items-center justify-end">
+              {/* Изображение для десктопа */}
+              <div className="hidden md:block relative w-[272px] h-[416px] md:w-[336px] md:h-[560px] lg:w-[400px] lg:h-[680px] xl:w-[480px] xl:h-[800px] flex flex-col items-center justify-end">
                 <Image 
                   src="/host/prozz.webp"
                   alt="Семён Суродин"
@@ -46,6 +47,19 @@ export function Hero() {
                   className="relative z-20"
                   priority
                 />
+              </div>
+              {/* Изображение для мобильных - круглое, верхняя половина */}
+              <div className="block md:hidden relative w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg mx-auto mt-4 mb-8">
+                <div className="absolute top-0 left-0 w-full h-[200%] pointer-events-none">
+                  <Image 
+                    src="/host/prozz.webp"
+                    alt="Семён Суродин - Аватар"
+                    fill
+                    style={{ objectFit: "contain", objectPosition: "50% 25%" }}
+                    className="relative z-20"
+                    priority
+                  />
+                </div>
               </div>
             </div>
             {/* Текст */}
@@ -65,7 +79,9 @@ export function Hero() {
 
               {/* Кнопка видео — круглая, с крутящимися фразами */}
               <div className="mt-8 flex justify-center w-full">
-                <VideoButton />
+                <div className="relative left-[-25px] md:left-[-40px]">
+                  <VideoButton />
+                </div>
               </div>
             </div>
           </div>
@@ -73,12 +89,13 @@ export function Hero() {
       </section>
 
       {/* Блок с lin2.webp */}
-      <div className="relative w-full overflow-hidden" style={{ minHeight: '80px' }}>
+      <div 
+        className="w-full overflow-hidden absolute bottom-0 left-0 right-0 z-60 md:min-h-[80px]"
+      >
         <img
           src="/site/lin2.webp"
           alt="Создаю мероприятия"
           className="w-full object-contain"
-          style={{ minHeight: '80px', maxHeight: '120px', height: 'auto', position: 'relative' }}
         />
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <h2 className="text-white text-2xl md:text-4xl font-bold tracking-widest text-center whitespace-nowrap drop-shadow-lg">
@@ -86,6 +103,6 @@ export function Hero() {
           </h2>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -54,8 +54,8 @@ export function Contacts() {
                 src={hostImages.phone}
                 alt="Семён Суродин с телефоном"
                 fill
-                style={{ objectFit: "contain", objectPosition: "center center" }}
-                className="hover:scale-105 transition-transform duration-500"
+                style={{ objectFit: "cover", objectPosition: "center center" }}
+                className="hover:scale-105 transition-transform duration-500 rounded-xl"
               />
             </div>
           </motion.div>
@@ -101,7 +101,7 @@ export function Contacts() {
                   Телефон для связи
                 </p>
                 <p className="text-white text-2xl contact-info">
-                  <a href="tel:+79222245645" className="hover:text-[#fbf7e4]">
+                  <a href="tel:+79222245645" className="hover:text-[#555555]">
                     +7 (922) 224-56-45
                   </a>
                 </p>
@@ -119,7 +119,7 @@ export function Contacts() {
                   Электронная почта
                 </p>
                 <p className="text-white text-2xl contact-info">
-                  <a href="mailto:surodin.semyon@yandex.ru" className="hover:text-[#fbf7e4]">
+                  <a href="mailto:surodin.semyon@yandex.ru" className="hover:text-[#555555]">
                     surodin.semyon@yandex.ru
                   </a>
                 </p>
